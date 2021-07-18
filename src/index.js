@@ -4,20 +4,23 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
-import { addTodo, completeTodo, showComplete } from "./redux/actions";
+import ReduxContext from "./contexts/ReduxContext";
+// import { addTodo, completeTodo, showComplete } from "./redux/actions";
 
-store.subscribe(() => {
-  console.log(store.getState());
-});
+// store.subscribe(() => {
+//   console.log(store.getState());
+// });
 
-// console.log(store);
-store.dispatch(addTodo("안녕"));
-store.dispatch(completeTodo(0));
-store.dispatch(showComplete());
+// // console.log(store);
+// store.dispatch(addTodo("안녕"));
+// store.dispatch(completeTodo(0));
+// store.dispatch(showComplete());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ReduxContext.Provider value={store}>
+      <App />
+    </ReduxContext.Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
