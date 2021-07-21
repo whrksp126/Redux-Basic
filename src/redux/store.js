@@ -3,6 +3,8 @@ import todoApp from "./reducers/reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
+import promise from "redux-promise-middleware";
+
 //==============================================
 // // 미들웨어는 function이다, store를 인자로 받을 수 있음
 // function middleware1(store) {
@@ -42,6 +44,9 @@ import thunk from "redux-thunk";
 // export default store;
 //=====================================================
 
-const store = createStore(todoApp, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  todoApp,
+  composeWithDevTools(applyMiddleware(thunk, promise))
+);
 
 export default store;
