@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // TODO list에 TODO를 넣는 action인 ADD_TODO라고 하는
 // action에 type을 정의하도록함
 
@@ -62,5 +64,17 @@ export function getUsersFail(error) {
   return {
     type: GET_USERS_FAIL,
     error,
+  };
+}
+
+export function getUsersThunk() {
+  return async (dispatch) => {
+    try {
+      dispatch(getUsersStart());
+      const res = await axios.get("https://api.github.com/users");
+      dispatch(getUsersSuccess(res.data));
+    } catch (error) {
+      dispatch(getUsersFail(error));
+    }
   };
 }
