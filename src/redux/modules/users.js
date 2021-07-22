@@ -1,4 +1,6 @@
 import axios from "axios";
+import { push } from "connected-react-router";
+import { call, delay, put, takeEvery } from "redux-saga/effects";
 
 // 액션 타입 정의
 
@@ -125,4 +127,35 @@ export function getUsersPromise() {
       return res.data;
     },
   };
+}
+
+// redux-saga
+const GET_USERS_SAGA_START = "GET_USERS_SAGA_START";
+
+// 제너레이터 생성 함수
+function* getUsersSaga(action) {
+  // 사이드 이펙을 일으키는 로직
+  try {
+    yield put(getUsersStart());
+    // sleep
+    yield delay(2000);
+    // 비동기 로직을 effect로 실행한 것
+    const res = yield call(axios.get, "https://api.github.com/users");
+    yield put(getUsersSuccess(res.data));
+    yield put(push("/"));
+  } catch (error) {
+    yield put(getUsersFail(error));
+  }
+}
+
+// 액션 생성 함수
+export function getUsersSagaStart() {
+  return {
+    type: GET_USERS_SAGA_START,
+  };
+}
+
+// saga함수를 한군데 모아서 등록하고 미들웨어에게 전달하기
+export function* usersSaga() {
+  yield takeEvery(GET_USERS_SAGA_START, getUsersSaga);
 }
